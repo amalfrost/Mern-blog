@@ -1,4 +1,5 @@
 const User = require("../models/userModel")
+const generateToken = require("../utils/generateToken");
 
 const register = async (req, res) => {
     try {
@@ -37,27 +38,55 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     try {
+        // console.log(req.body)
         const { email, password } = req.body
-        if (!email || password) {
+        if (!email || !password) {
             return res.status(400).json({
                 message: "Email and Password are required"
             })
         }
-        const isNewUser = await User.findOne({ email })
+        const user = await User.findOne({ email })
 
-        if (isNewUser) {
-
-        } else {
-            return res.status(409).json({
-                message: 'New user plz register'
+        if (!user) {
+            return res.status(404).json({
+                message: 'Invalid credentials'
             })
         }
 
-    } catch (error) {
 
+        const matchUser = await user?.comparePassword(password)
+        console.log(matchUser)
+
+        if (!matchUser) {
+            return res.status(400).json({
+                message: 'Invalid credentials'
+            })
+        }
+        const token = generateToken(user.id)
+        console.log(token)
+
+        res.status(200).json({
+            token,
+            user: {
+                id: user._id,
+                email: user.email,
+            },
+        });
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(401).json({
+            message: error.message,
+        });
     }
 }
+const getCurrentUser = async (req, res) => {
+    res.status(200).json(req.user);
+};
 
 module.exports = {
     register,
+    login,
+    getCurrentUser
 };
