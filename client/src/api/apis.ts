@@ -1,1 +1,1 @@
-export const LOGIN_API = 'http://localhost:5000/api/auth/login'
+export const BASEAPI = 'http://localhost:5000/api'

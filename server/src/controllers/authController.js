@@ -5,7 +5,7 @@ const register = async (req, res) => {
     try {
         console.log(req.body, 'bodyyyyy')
 
-        const { email, password } = req.body
+        const { email, password, userName } = req.body
         if (!email) {
             return res.status(400).json({
                 message: "Email and Password are required"
@@ -21,7 +21,8 @@ const register = async (req, res) => {
 
         const user = await User.create({
             email,
-            password
+            password,
+            userName
         })
         res.status(201).json({
             message: "User created successfully",
@@ -70,6 +71,7 @@ const login = async (req, res) => {
             user: {
                 id: user._id,
                 email: user.email,
+                userName: user.userName
             },
         });
 
