@@ -3,7 +3,6 @@ const slugify = require("slugify")
 
 const createPost = async (req, res) => {
     try {
-        console.log(req)
         const {
             title,
             excerpt,
@@ -44,7 +43,6 @@ const createPost = async (req, res) => {
 
     }
     catch (err) {
-        console.log(err)
         res.status(500).json({
             message: err.message
         })
@@ -58,14 +56,106 @@ const getAllPosts = async (req, res) => {
         res.status(200).json(posts)
 
     } catch (err) {
-        console.log("error inside get post")
         res.status(500).json({
             message: err.message
         })
     }
 }
 
+const getPostBySlug = async (req, res) => {
+    try {
+        const { slug } = req.params
+
+        const post = await Post.findOne({ slug }).populate("author", "email")
+        if (!post) {
+            return res.status(404).json({
+                message: "Post not found"
+            })
+        }
+
+        return res.status(200).json({
+            post: post
+        })
+
+
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+const updatePosts = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id).populate("author", "email")
+        if (!post) {
+            return res.status(404).json({
+                message: "Post not found"
+            })
+        }
+
+        if (req.body.title) {
+
+            post.slug = slugify(req.body.title, {
+                lower: true,
+                strict: true
+            })
+        }
+
+        if (post.author.id === req.user.id) {
+            post.title = req.body.title ?? post.title
+            post.excerpt = req.body.excerpt ?? post.excerpt
+            post.content = req.body.content ?? post.content
+            post.coverImage = req.body.coverImage ?? post.coverImage
+
+            await post.save()
+            return res.status(200).json({
+                post
+            })
+        }
+
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+const deletePosts = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id).populate("author", "email")
+        if (!post) {
+            return res.status(404).json({
+                message: "Invalid Post, unable to delete"
+            })
+        }
+
+        console.log(post, 'post')
+        console.log(req.user)
+        const postId = post.author.id
+        const userId = req.user.id
+
+        if (postId === userId) {
+            await post.deleteOne()
+
+            return res.status(200).json({
+                message: "Post deleted Successfully"
+            })
+        }
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
+}
+
 module.exports = {
     createPost,
-    getAllPosts
+    getAllPosts,
+    getPostBySlug,
+    updatePosts,
+    deletePosts
 }

@@ -3,9 +3,13 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import type { UserModel } from '../models/userModel'
 import api from '../api/axios'
 import { useNavigate } from 'react-router-dom'
+import type { RegisterResponse } from '../features/auth/authModel'
+import { useDispatch } from 'react-redux'
+import { setCredentials } from '../features/auth/authSlice'
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
+    const dispatch = useDispatch()
 
     const navigate = useNavigate()
 
@@ -14,8 +18,14 @@ const Register = () => {
         registerUser(data)
     }
     const registerUser = async (data: UserModel) => {
-        const registerRes = api.post("/auth/register", data)
-        console.log(registerRes)
+        const registerRes = await api.post("/auth/register", data)
+        localStorage.setItem("token", registerRes.data.token)
+        const { userName, email } = registerRes.data.user
+        const user = { userName, email }
+        localStorage.setItem("userData", JSON.stringify(user))
+        dispatch(setCredentials(registerRes))
+        navigate("/")
+        // console.log(registerRes)
     }
     const INPUT_STYLE = "border-b-[1px] border-blue-600 w-full p-2 rounded hover";
     return (

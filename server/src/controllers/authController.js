@@ -3,7 +3,6 @@ const generateToken = require("../utils/generateToken");
 
 const register = async (req, res) => {
     try {
-        console.log(req.body, 'bodyyyyy')
 
         const { email, password, userName } = req.body
         if (!email) {
@@ -24,9 +23,12 @@ const register = async (req, res) => {
             password,
             userName
         })
+        const token = generateToken(user.id)
         res.status(201).json({
             message: "User created successfully",
             userId: user._id,
+            token,
+            user
         });
     } catch (error) {
         console.error(error);
