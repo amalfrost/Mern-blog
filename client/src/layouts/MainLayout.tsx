@@ -5,7 +5,6 @@ import type { RootState } from "../store";
 
 const MainLayout = () => {
     const user = useSelector((state: RootState) => state.auth?.user)
-    console.log(user)
     return (
         <>
             <NavBar user={user} />
