@@ -26,7 +26,7 @@ const Home = () => {
                     </p>
 
                     <div className="flex justify-center gap-4">
-                        <button className="px-6 py-3 cursor-pointer bg-blue-600 text-white rounded-lg font-medium">
+                        <button onClick={() => navigate("/createPosts")} className="px-6 py-3 cursor-pointer bg-blue-600 text-white rounded-lg font-medium">
                             Start Writing
                         </button>
 

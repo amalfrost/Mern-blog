@@ -35,9 +35,16 @@ const Post = () => {
                         {post?.title}
                     </h1>
 
-                    <div className="border-b border-slate-200 mb-6 pb-4">
+                    <div className="border-b border-slate-200 mb-6 pb-4 flex justify-between">
                         <p className="text-sm text-slate-500">
-                            By {post?.author?.email}
+                            By : {post?.author?.email}
+                        </p>
+                        <p className="text-sm text-slate-500">
+                            Updated on : {new Date(post?.updatedAt).toLocaleDateString("en-IN", {
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric",
+                            })}
                         </p>
                     </div>
 

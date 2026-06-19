@@ -39,7 +39,8 @@ const Login = () => {
     }
 
     useEffect(() => {
-        if (auth?.isAuthenticated) {
+        if (auth?.user) {
+            console.log(auth)
             navigate("/")
         }
     }, [auth])

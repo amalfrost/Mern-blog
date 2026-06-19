@@ -7,6 +7,8 @@ const MainLayout = () => {
     const user = useSelector((state: RootState) => state.auth?.user)
     return (
         <>
+            {/* TODO: load images first then   */}
+            {/* TODO: fix issue with the login and lgout bug  */}
             <NavBar user={user} />
             <Outlet />
         </>

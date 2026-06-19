@@ -1,9 +1,7 @@
-import React from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import type { UserModel } from '../models/userModel'
 import api from '../api/axios'
 import { useNavigate } from 'react-router-dom'
-import type { RegisterResponse } from '../features/auth/authModel'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../features/auth/authSlice'
 
