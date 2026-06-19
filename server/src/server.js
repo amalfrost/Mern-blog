@@ -5,8 +5,11 @@ require("dotenv").config();
 const PORT = '5000'
 
 const app = express()
+
+app.use(cors());
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes")
+const postRoutes = require("./routes/postRoutes")
 
 
 app.use(express.json());
@@ -19,6 +22,7 @@ app.get('/', (req, res) => {
 })
 
 app.use("/api/auth", authRoutes)
+app.use("/api/posts", postRoutes)
 
 app.listen(PORT, () => {
     console.log('server running on ', PORT)
