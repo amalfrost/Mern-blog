@@ -4,6 +4,7 @@ import type { RootState } from '../../store'
 import { useNavigate } from 'react-router-dom'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import type { PostModel } from './postModel'
+import api from '../../api/axios'
 
 const CreatePost = () => {
     const user = useSelector((state: RootState) => state.auth)
@@ -32,6 +33,8 @@ const CreatePost = () => {
 
         console.log(payload);
 
+        api.post('/posts', payload).then(res => console.log(res))
+
         // await createPost(payload)
     };
 
@@ -43,6 +46,7 @@ const CreatePost = () => {
             <form onSubmit={handleSubmit(onCreate)} >
 
                 <input className={INPUT_STYLE} placeholder='Title' type='text' {...register("title")} />
+                <input className={INPUT_STYLE} placeholder='excerpt' type='text' {...register("excerpt")} />
                 <input className={INPUT_STYLE} placeholder='Content' type='text' {...register("content")} />
                 <input className={INPUT_STYLE} placeholder='coverImage Url' type='text' {...register("coverImage")} />
                 <textarea className={INPUT_STYLE} placeholder='images Url' type='text' {...register("images")} />

@@ -6,6 +6,7 @@ import MainLayout from '../layouts/MainLayout'
 import ShowPost from '../features/posts/ShowPost'
 import Post from '../components/Post'
 import CreatePost from '../features/posts/CreatePost'
+import EditPosts from '../features/posts/EditPosts'
 
 const AppRoutes = () => {
     return (
@@ -17,6 +18,7 @@ const AppRoutes = () => {
                 <Route path="posts" element={<ShowPost />} />
                 <Route path="createPosts" element={<CreatePost />} />
                 <Route path="/post/:slug" element={<Post />} />
+                <Route path="/edit/:slug" element={<EditPosts />} />
             </Route>
         </Routes>
     )
