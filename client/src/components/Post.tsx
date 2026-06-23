@@ -4,6 +4,7 @@ import api from '../api/axios'
 import type { PostModel } from '../features/posts/postModel'
 import { useSelector } from 'react-redux'
 import { FaEdit } from "react-icons/fa";
+import { MdDelete } from 'react-icons/md'
 
 
 const Post = () => {
@@ -46,6 +47,15 @@ const Post = () => {
     function handleClick(slug) {
         navigate(`/edit/${slug}`)
     }
+
+    function handleDelete(id: string) {
+        if (id) {
+            api.delete(`/posts/${id}`).then(res => console.log(res)).
+                then(() => alert('deleted post successfully')).
+                then(() => navigate('/posts'))
+        }
+    }
+
     return (
         <div className="max-w-4xl mx-auto px-4 py-8">
 
@@ -64,8 +74,11 @@ const Post = () => {
                         <h1 className="text-4xl font-bold text-slate-900 mb-6">
                             {post?.title}
                         </h1>
-                        {userId === post?.author._id && <FaEdit onClick={() => handleClick(post?.slug)}
-                            className='text-xl cursor-pointer ' />}
+                        {userId === post?.author._id && <div className='flex gap-2' ><FaEdit onClick={() => handleClick(post?.slug)}
+                            className='text-xl cursor-pointer hover:text-blue-500 ' />
+                            <MdDelete className='text-xl cursor-pointer hover:text-red-500 ' onClick={() => handleDelete(post?._id)} />
+                        </div>
+                        }
                     </div>
 
                     <div className="border-b border-slate-200 mb-6 pb-4 flex justify-between">
