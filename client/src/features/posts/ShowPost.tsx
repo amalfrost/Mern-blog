@@ -40,12 +40,15 @@ const ShowPost = () => {
                     hover:shadow-xl
                     hover:-translate-y-1
                 "
-                        >
-                            <img
-                                src={post.coverImage}
-                                alt={post.title}
-                                className="w-full h-64 object-cover"
-                            />
+                        >{
+                                /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(post?.coverImage || "") && (
+                                    <img
+                                        src={post.coverImage}
+                                        alt={post.title}
+                                        className="w-full h-64 object-cover"
+                                    />
+                                )
+                            }
 
                             <div className="p-6">
                                 <h2 className="text-2xl font-bold text-slate-800 mb-3">
